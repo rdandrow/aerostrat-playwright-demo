@@ -1,0 +1,14 @@
+# Core testing dependencies
+playwright==1.55.0
+pytest==7.4.3
+pytest-playwright==0.5.2
+
+# Additional testing utilities
+pytest-xdist==3.5.0  # For parallel test execution
+pytest-html==4.1.1   # For HTML test reports
+pytest-cov==4.1.0    # For coverage reporting
+
+# Development dependencies
+black==23.12.1        # Code formatting
+flake8==7.0.0         # Linting
+mypy==1.8.0          # Type checking

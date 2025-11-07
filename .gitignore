@@ -1,0 +1,7 @@
+# Virtual environment
+.venv/
+
+# Python cache files
+tests/__pycache__/
+tests/page_objects/__pycache__/
+tests/test_cases/__pycache__/
