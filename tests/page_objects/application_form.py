@@ -27,10 +27,10 @@ class Pronouns(Enum):
 
 class ExperienceLevel(Enum):
     """Enum for experience level options."""
-    NONE = "None"
-    ZERO_TO_ONE = "0-1 year"
-    ONE_TO_TWO = "1-2 years"
-    TWO_TO_FOUR = "2-4 years"
+    ZERO_TO_ONE = "0-1 years"
+    TWO = "2 years"
+    THREE = "3 years"
+    FOUR = "4 years"
     FIVE_PLUS = "5+ years"
 
 
@@ -88,39 +88,39 @@ class AerostratApplicationFormPage:
         self.github_input = self.page.locator("input[name*='github' i]")
         self.other_url_input = self.page.locator("input[name*='other' i]")
         
-        # Job-Specific Questions Section
-        self.questions_heading = self.page.locator("h4:has-text('SOFTWARE ENGINEER - QA QUESTIONS')")
+        # Job-Specific Questions Section - flexible to handle different job titles
+        self.questions_heading = self.page.locator("h4").filter(has_text="QUESTIONS").first
         
         # Experience questions - E2E automation (first question - use nth)
-        self.e2e_automation_question = self.page.locator("text='How many years of work experience do you have developing E2E test automation?'")
-        self.e2e_automation_none = self.page.locator("input[value='None']").nth(0)
-        self.e2e_automation_0_1 = self.page.locator("input[value='0-1 year']").nth(0)
-        self.e2e_automation_1_2 = self.page.locator("input[value='1-2 years']").nth(0)
-        self.e2e_automation_2_4 = self.page.locator("input[value='2-4 years']").nth(0)
+        self.e2e_automation_question = self.page.locator("text=/E2E test automation/i").first
+        self.e2e_automation_0_1 = self.page.locator("input[value='0-1 years']").nth(0)
+        self.e2e_automation_2 = self.page.locator("input[value='2 years']").nth(0)
+        self.e2e_automation_3 = self.page.locator("input[value='3 years']").nth(0)
+        self.e2e_automation_4 = self.page.locator("input[value='4 years']").nth(0)
         self.e2e_automation_5_plus = self.page.locator("input[value='5+ years']").nth(0)
         
         # Experience questions - Python (second question - use nth 1)
-        self.python_question = self.page.locator("text='How many years of direct work experience do you have developing code in Python?'")
-        self.python_none = self.page.locator("input[value='None']").nth(1)
-        self.python_0_1 = self.page.locator("input[value='0-1 year']").nth(1)
-        self.python_1_2 = self.page.locator("input[value='1-2 years']").nth(1)
-        self.python_2_4 = self.page.locator("input[value='2-4 years']").nth(1)
+        self.python_question = self.page.locator("text=/Python/i").filter(has_text="years").first
+        self.python_0_1 = self.page.locator("input[value='0-1 years']").nth(1)
+        self.python_2 = self.page.locator("input[value='2 years']").nth(1)
+        self.python_3 = self.page.locator("input[value='3 years']").nth(1)
+        self.python_4 = self.page.locator("input[value='4 years']").nth(1)
         self.python_5_plus = self.page.locator("input[value='5+ years']").nth(1)
         
         # Experience questions - Playwright (third question - use nth 2)
-        self.playwright_question = self.page.locator("text='How many years of direct work experience do you have developing E2E tests with Playwright?'")
-        self.playwright_none = self.page.locator("input[value='None']").nth(2)
-        self.playwright_0_1 = self.page.locator("input[value='0-1 year']").nth(2)
-        self.playwright_1_2 = self.page.locator("input[value='1-2 years']").nth(2)
-        self.playwright_2_4 = self.page.locator("input[value='2-4 years']").nth(2)
+        self.playwright_question = self.page.locator("text=/Playwright/i").filter(has_text="years").first
+        self.playwright_0_1 = self.page.locator("input[value='0-1 years']").nth(2)
+        self.playwright_2 = self.page.locator("input[value='2 years']").nth(2)
+        self.playwright_3 = self.page.locator("input[value='3 years']").nth(2)
+        self.playwright_4 = self.page.locator("input[value='4 years']").nth(2)
         self.playwright_5_plus = self.page.locator("input[value='5+ years']").nth(2)
         
         # Experience questions - Different types of automated tests (fourth question - use nth 3)
-        self.automation_types_description = self.page.locator("div.text:has-text('How many years of experience do you have developing different types of automated tests (i.e. API, Security, Performance, etc.)?')")
-        self.automation_types_none = self.page.locator("input[value='None']").nth(3)
-        self.automation_types_0_1 = self.page.locator("input[value='0-1 year']").nth(3)
-        self.automation_types_1_2 = self.page.locator("input[value='1-2 years']").nth(3)
-        self.automation_types_2_4 = self.page.locator("input[value='2-4 years']").nth(3)
+        self.automation_types_description = self.page.locator("text=/different types of automated tests/i").first
+        self.automation_types_0_1 = self.page.locator("input[value='0-1 years']").nth(3)
+        self.automation_types_2 = self.page.locator("input[value='2 years']").nth(3)
+        self.automation_types_3 = self.page.locator("input[value='3 years']").nth(3)
+        self.automation_types_4 = self.page.locator("input[value='4 years']").nth(3)
         self.automation_types_5_plus = self.page.locator("input[value='5+ years']").nth(3)
         
         # Additional Information Section
@@ -147,7 +147,7 @@ class AerostratApplicationFormPage:
         self.loading_spinner = self.page.locator(".loading")
         self.success_message = self.page.locator(".success-message")
     
-    def navigate_to(self, job_id: str = "2cce6cc2-dcdd-4562-af4d-8eb6afd5b281"):
+    def navigate_to(self, job_id: str = "adac8189-b81c-4d24-9b66-a43f138685ac"):
         """Navigate to the Aerostrat job application form page.
         
         Args:
@@ -280,10 +280,10 @@ class AerostratApplicationFormPage:
             level: Experience level to select
         """
         experience_map = {
-            ExperienceLevel.NONE: self.e2e_automation_none,
             ExperienceLevel.ZERO_TO_ONE: self.e2e_automation_0_1,
-            ExperienceLevel.ONE_TO_TWO: self.e2e_automation_1_2,
-            ExperienceLevel.TWO_TO_FOUR: self.e2e_automation_2_4,
+            ExperienceLevel.TWO: self.e2e_automation_2,
+            ExperienceLevel.THREE: self.e2e_automation_3,
+            ExperienceLevel.FOUR: self.e2e_automation_4,
             ExperienceLevel.FIVE_PLUS: self.e2e_automation_5_plus
         }
         
@@ -297,10 +297,10 @@ class AerostratApplicationFormPage:
             level: Experience level to select
         """
         experience_map = {
-            ExperienceLevel.NONE: self.python_none,
             ExperienceLevel.ZERO_TO_ONE: self.python_0_1,
-            ExperienceLevel.ONE_TO_TWO: self.python_1_2,
-            ExperienceLevel.TWO_TO_FOUR: self.python_2_4,
+            ExperienceLevel.TWO: self.python_2,
+            ExperienceLevel.THREE: self.python_3,
+            ExperienceLevel.FOUR: self.python_4,
             ExperienceLevel.FIVE_PLUS: self.python_5_plus
         }
         
@@ -314,10 +314,10 @@ class AerostratApplicationFormPage:
             level: Experience level to select
         """
         experience_map = {
-            ExperienceLevel.NONE: self.playwright_none,
             ExperienceLevel.ZERO_TO_ONE: self.playwright_0_1,
-            ExperienceLevel.ONE_TO_TWO: self.playwright_1_2,
-            ExperienceLevel.TWO_TO_FOUR: self.playwright_2_4,
+            ExperienceLevel.TWO: self.playwright_2,
+            ExperienceLevel.THREE: self.playwright_3,
+            ExperienceLevel.FOUR: self.playwright_4,
             ExperienceLevel.FIVE_PLUS: self.playwright_5_plus
         }
         
@@ -331,10 +331,10 @@ class AerostratApplicationFormPage:
             level: Experience level to select
         """
         experience_map = {
-            ExperienceLevel.NONE: self.automation_types_none,
             ExperienceLevel.ZERO_TO_ONE: self.automation_types_0_1,
-            ExperienceLevel.ONE_TO_TWO: self.automation_types_1_2,
-            ExperienceLevel.TWO_TO_FOUR: self.automation_types_2_4,
+            ExperienceLevel.TWO: self.automation_types_2,
+            ExperienceLevel.THREE: self.automation_types_3,
+            ExperienceLevel.FOUR: self.automation_types_4,
             ExperienceLevel.FIVE_PLUS: self.automation_types_5_plus
         }
         
@@ -424,10 +424,10 @@ class AerostratApplicationFormPage:
                                  portfolio_url: Optional[str] = None,
                                  github_url: Optional[str] = None,
                                  other_url: Optional[str] = None,
-                                 e2e_automation: ExperienceLevel = ExperienceLevel.TWO_TO_FOUR,
-                                 python: ExperienceLevel = ExperienceLevel.TWO_TO_FOUR,
-                                 playwright: ExperienceLevel = ExperienceLevel.ONE_TO_TWO,
-                                 automation_types: ExperienceLevel = ExperienceLevel.TWO_TO_FOUR,
+                                 e2e_automation: ExperienceLevel = ExperienceLevel.FOUR,
+                                 python: ExperienceLevel = ExperienceLevel.FOUR,
+                                 playwright: ExperienceLevel = ExperienceLevel.TWO,
+                                 automation_types: ExperienceLevel = ExperienceLevel.FOUR,
                                  additional_info: Optional[str] = None):
         """Fill out the complete application form with provided information.
         

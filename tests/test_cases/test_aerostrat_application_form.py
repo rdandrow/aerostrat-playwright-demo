@@ -171,17 +171,17 @@ class TestAerostratJobApplication:
         
         # Answer experience questions
         application_form.answer_experience_questions(
-            e2e_automation=ExperienceLevel.TWO_TO_FOUR,
+            e2e_automation=ExperienceLevel.FOUR,
             python=ExperienceLevel.FIVE_PLUS,
-            playwright=ExperienceLevel.ONE_TO_TWO,
-            automation_types=ExperienceLevel.TWO_TO_FOUR
+            playwright=ExperienceLevel.TWO,
+            automation_types=ExperienceLevel.FOUR
         )
         
         # Verify selections were made (check that radio buttons are checked)
-        expect(application_form.e2e_automation_2_4).to_be_checked()
+        expect(application_form.e2e_automation_4).to_be_checked()
         expect(application_form.python_5_plus).to_be_checked()
-        expect(application_form.playwright_1_2).to_be_checked()
-        expect(application_form.automation_types_2_4).to_be_checked()
+        expect(application_form.playwright_2).to_be_checked()
+        expect(application_form.automation_types_4).to_be_checked()
     
     def test_individual_experience_question_selection(self, application_form: AerostratApplicationFormPage):
         """Test selecting individual experience levels for each question."""
@@ -196,16 +196,16 @@ class TestAerostratJobApplication:
         expect(application_form.e2e_automation_5_plus).to_be_checked()
         
         # Test Python experience selection
-        application_form.select_python_experience(ExperienceLevel.TWO_TO_FOUR)
-        expect(application_form.python_2_4).to_be_checked()
+        application_form.select_python_experience(ExperienceLevel.FOUR)
+        expect(application_form.python_4).to_be_checked()
         
         # Test Playwright experience selection
         application_form.select_playwright_experience(ExperienceLevel.ZERO_TO_ONE)
         expect(application_form.playwright_0_1).to_be_checked()
         
         # Test automation types experience selection
-        application_form.select_automation_types_experience(ExperienceLevel.ONE_TO_TWO)
-        expect(application_form.automation_types_1_2).to_be_checked()
+        application_form.select_automation_types_experience(ExperienceLevel.TWO)
+        expect(application_form.automation_types_2).to_be_checked()
     
     def test_additional_information_section(self, application_form: AerostratApplicationFormPage, fake):
         """Test filling out the additional information section."""
@@ -276,10 +276,10 @@ class TestAerostratJobApplication:
         additional_info = f"{fake.sentence()} {fake.company_suffix()} and contribute to {fake.random_element(elements=['aviation technology', 'aerospace innovation', 'technical excellence'])}!"
         
         # Generate random experience levels for verification later
-        e2e_automation_level = fake.random_element(elements=[ExperienceLevel.ONE_TO_TWO, ExperienceLevel.TWO_TO_FOUR, ExperienceLevel.FIVE_PLUS])
-        python_level = fake.random_element(elements=[ExperienceLevel.TWO_TO_FOUR, ExperienceLevel.FIVE_PLUS])
-        playwright_level = fake.random_element(elements=[ExperienceLevel.ONE_TO_TWO, ExperienceLevel.TWO_TO_FOUR])
-        automation_types_level = fake.random_element(elements=[ExperienceLevel.TWO_TO_FOUR, ExperienceLevel.FIVE_PLUS])
+        e2e_automation_level = fake.random_element(elements=[ExperienceLevel.TWO, ExperienceLevel.THREE, ExperienceLevel.FOUR, ExperienceLevel.FIVE_PLUS])
+        python_level = fake.random_element(elements=[ExperienceLevel.THREE, ExperienceLevel.FOUR, ExperienceLevel.FIVE_PLUS])
+        playwright_level = fake.random_element(elements=[ExperienceLevel.ZERO_TO_ONE, ExperienceLevel.TWO, ExperienceLevel.THREE])
+        automation_types_level = fake.random_element(elements=[ExperienceLevel.THREE, ExperienceLevel.FOUR, ExperienceLevel.FIVE_PLUS])
         
         # Fill complete application using the comprehensive method
         application_form.fill_complete_application(
@@ -310,23 +310,26 @@ class TestAerostratJobApplication:
         # Helper function to get the correct radio button for each experience level
         def get_e2e_radio_button(level):
             mapping = {
-                ExperienceLevel.ONE_TO_TWO: application_form.e2e_automation_1_2,
-                ExperienceLevel.TWO_TO_FOUR: application_form.e2e_automation_2_4,
+                ExperienceLevel.TWO: application_form.e2e_automation_2,
+                ExperienceLevel.THREE: application_form.e2e_automation_3,
+                ExperienceLevel.FOUR: application_form.e2e_automation_4,
                 ExperienceLevel.FIVE_PLUS: application_form.e2e_automation_5_plus
             }
             return mapping[level]
         
         def get_python_radio_button(level):
             mapping = {
-                ExperienceLevel.TWO_TO_FOUR: application_form.python_2_4,
+                ExperienceLevel.THREE: application_form.python_3,
+                ExperienceLevel.FOUR: application_form.python_4,
                 ExperienceLevel.FIVE_PLUS: application_form.python_5_plus
             }
             return mapping[level]
         
         def get_playwright_radio_button(level):
             mapping = {
-                ExperienceLevel.ONE_TO_TWO: application_form.playwright_1_2,
-                ExperienceLevel.TWO_TO_FOUR: application_form.playwright_2_4
+                ExperienceLevel.ZERO_TO_ONE: application_form.playwright_0_1,
+                ExperienceLevel.TWO: application_form.playwright_2,
+                ExperienceLevel.THREE: application_form.playwright_3
             }
             return mapping[level]
         
@@ -405,10 +408,10 @@ class TestAerostratJobApplication:
         expect(application_form.lever_branding).to_be_visible()
     
     @pytest.mark.parametrize("experience_level", [
-        ExperienceLevel.NONE,
         ExperienceLevel.ZERO_TO_ONE,
-        ExperienceLevel.ONE_TO_TWO,
-        ExperienceLevel.TWO_TO_FOUR,
+        ExperienceLevel.TWO,
+        ExperienceLevel.THREE,
+        ExperienceLevel.FOUR,
         ExperienceLevel.FIVE_PLUS
     ])
     def test_all_experience_levels_selectable(self, application_form: AerostratApplicationFormPage, experience_level):
@@ -424,10 +427,10 @@ class TestAerostratJobApplication:
         
         # Verify the selection worked
         experience_map = {
-            ExperienceLevel.NONE: application_form.e2e_automation_none,
             ExperienceLevel.ZERO_TO_ONE: application_form.e2e_automation_0_1,
-            ExperienceLevel.ONE_TO_TWO: application_form.e2e_automation_1_2,
-            ExperienceLevel.TWO_TO_FOUR: application_form.e2e_automation_2_4,
+            ExperienceLevel.TWO: application_form.e2e_automation_2,
+            ExperienceLevel.THREE: application_form.e2e_automation_3,
+            ExperienceLevel.FOUR: application_form.e2e_automation_4,
             ExperienceLevel.FIVE_PLUS: application_form.e2e_automation_5_plus
         }
         

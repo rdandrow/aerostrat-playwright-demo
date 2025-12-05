@@ -24,7 +24,7 @@ class AerostratJobPage:
         """Define all locators for the job page elements."""
         # Header elements
         self.aerostrat_logo = self.page.locator(".main-header-logo img[alt*='Aerostrat']")
-        self.job_title = self.page.locator("h2:has-text('Software Engineer - QA')")
+        self.job_title = self.page.get_by_role("heading", level=2).first
         
         # Job details section  
         self.job_location = self.page.locator(".location")
@@ -47,11 +47,11 @@ class AerostratJobPage:
         self.playwright_requirement = self.page.locator("text=/Playwright/i").first
         self.cypress_requirement = self.page.locator("text=/Cypress/i").first
         self.python_requirement = self.page.locator("text=/Python/i").first
-        self.salary_range = self.page.locator("text=/\\$100,000.*\\$150,000/i").first
+        self.salary_range = self.page.locator(".posting-categories .sort-by-salary").first
         
         # Application elements
         self.apply_button = self.page.locator("a:has-text('APPLY FOR THIS JOB')").first
-        self.aerostrat_homepage_link = self.page.locator("a[href*='aerostratsoftware.com']").first
+        self.aerostrat_homepage_link = self.page.locator(".main-header-logo a[href*='aerostrat']").first
         
         # Footer elements
         self.lever_branding = self.page.locator("text='Jobs powered by Lever'")
@@ -64,7 +64,7 @@ class AerostratJobPage:
         self.loading_spinner = self.page.locator(".loading")
         self.error_message = self.page.locator(".error")
         
-    def navigate_to(self, job_id: str = "2cce6cc2-dcdd-4562-af4d-8eb6afd5b281"):
+    def navigate_to(self, job_id: str = "adac8189-b81c-4d24-9b66-a43f138685ac"):
         """Navigate to the Aerostrat job posting page.
         
         Args:
@@ -86,7 +86,7 @@ class AerostratJobPage:
         self.job_title.wait_for(state="visible", timeout=timeout)
         
         # Wait for any loading spinners to disappear
-        if self.loading_spinner.is_visible():
+        if self.loading_spinner.count() > 0:
             self.loading_spinner.wait_for(state="hidden", timeout=timeout)
     
     def get_job_title(self) -> str:
@@ -173,13 +173,21 @@ class AerostratJobPage:
             "remote": self.remote_indicator.is_visible()
         }
     
+    def has_salary_range(self) -> bool:
+        """Check if a salary range is displayed.
+        
+        Returns:
+            True if salary range is visible, False otherwise
+        """
+        return self.salary_range.count() > 0
+    
     def get_salary_range(self) -> str:
         """Get the salary range from the compensation section.
         
         Returns:
             Salary range as a string
         """
-        if self.salary_range.is_visible():
+        if self.salary_range.count() > 0:
             return self.salary_range.text_content()
         return ""
     
